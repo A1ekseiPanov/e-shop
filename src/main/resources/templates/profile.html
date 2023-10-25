@@ -3,11 +3,11 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>User</title>
+    <title>Profile</title>
 </head>
 <body>
 <div th:insert="~{fragments/menu :: #menu}"></div>
-<form th:action="@{/users/new}" th:object="${user}" method="post">
+<form th:action="@{/profile}" th:object="${user}" method="post">
     <table>
         <tr>
             <td>Name</td>

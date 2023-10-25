@@ -22,5 +22,5 @@ public class Bucket extends AbstractBaseEntity {
     @JoinTable(name = "buckets_products",
             joinColumns = @JoinColumn(name = "bucket_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))
-    List<Product> products;
+    private List<Product> products;
 }

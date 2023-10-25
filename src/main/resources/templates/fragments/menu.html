@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Menu</title>
+</head>
+<body>
+<div id="menu">
+    <table class="" style="border-collapse: separate; border-spacing: 15px 3px;" width="100%">
+        <tr>
+            <td align="center">
+                <table>
+                    <td>Menu:</td>
+                    <td><a th:href="@{/}">Home </a></td>
+                    <td><a th:href="@{/products}">Products </a></td>
+                    <td sec:authorize="isAuthenticated()"><a th:href="@{/bucket}">Bucket </a></td>
+                    <td sec:authorize="hasAnyAuthority('ADMIN', 'MANAGER')"><a th:href="@{/users}">Users </a></td>
+                </table>
+            </td>
+            <td align="right">
+                <div sec:authorize="isAuthenticated()">
+                    <div>
+                        Hello,<a th:href="@{/profile}"> <span sec:authentication="principal.username"></span></a>
+                    </div>
+                    <div>
+                        <a th:href="@{/logout}">Logout</a>
+                    </div>
+                </div>
+                <div sec:authorize="!isAuthenticated()">
+                    <div>
+                        Hello. Please <a th:href="@{/login}">Login</a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+
+    </table>
+</div>
+</form>
+</body>
+</html>

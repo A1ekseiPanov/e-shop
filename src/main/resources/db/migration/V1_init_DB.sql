@@ -65,7 +65,7 @@ create table if not exists buckets_products
 );
 
 alter table if exists buckets_products
-    add constraint products_fk_backers foreign key (product_id) references products;
+    add constraint products_fk_backers foreign key (product_id) references products on delete cascade;
 alter table if exists buckets_products
     add constraint backers_fk_products foreign key (bucket_id) references buckets;
 alter table if exists buckets

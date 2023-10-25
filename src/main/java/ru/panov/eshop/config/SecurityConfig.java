@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -19,6 +20,7 @@ import ru.panov.eshop.service.UserService;
 @EnableWebSecurity
 @RequiredArgsConstructor
 @Configuration
+@EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
     private final UserService userService;
 
@@ -36,12 +38,15 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(
-                        (authorize) -> authorize
-                                .requestMatchers("/users/new").hasAuthority(Role.ADMIN.name())
-                                .anyRequest().permitAll())
+                .authorizeHttpRequests((authorize) -> {
+                            authorize.requestMatchers("/users").hasAnyAuthority(Role.ADMIN.name(),Role.MANAGER.name());
+                            authorize.requestMatchers("/users/new").hasAuthority(Role.ADMIN.name())
+                                    .anyRequest().permitAll();
+                        }
+                )
                 .formLogin((l) -> {
                             l.loginPage("/login");
+                            l.failureUrl("/login-error");
                             l.loginProcessingUrl("/auth");
                             l.permitAll();
                         }

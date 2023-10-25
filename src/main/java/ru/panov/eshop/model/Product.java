@@ -1,10 +1,7 @@
 package ru.panov.eshop.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -14,6 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "products")
+@EqualsAndHashCode(callSuper = true)
 public class Product extends AbstractBaseEntity {
     private String title;
     private BigDecimal price;

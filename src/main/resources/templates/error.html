@@ -3,10 +3,10 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>E-SHOP</title>
+    <title>Error</title>
 </head>
 <body>
 <div th:insert="~{fragments/menu :: #menu}"></div>
-</div>
+<p th:utext="${errorMessage}"></p>
 </body>
 </html>

@@ -1,0 +1,69 @@
+package ru.panov.eshop.service;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ru.panov.eshop.dto.ProductDTO;
+import ru.panov.eshop.mapper.ProductMapper;
+import ru.panov.eshop.model.Bucket;
+import ru.panov.eshop.model.Product;
+import ru.panov.eshop.model.User;
+import ru.panov.eshop.repositoryes.ProductRepository;
+
+import java.util.Collections;
+import java.util.List;
+
+@Service
+public class ProductServiceImpl implements ProductService {
+    private final ProductMapper productMapper = ProductMapper.MAPPER;
+    private final ProductRepository productRepository;
+    private final UserService userService;
+    private final BucketService bucketService;
+
+    public ProductServiceImpl(ProductRepository productRepository,
+                              UserService userService,
+                              BucketService bucketService) {
+        this.productRepository = productRepository;
+        this.userService = userService;
+        this.bucketService = bucketService;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ProductDTO> getAll() {
+        return productMapper.fromProductList(productRepository.findAll());
+    }
+
+    @Override
+    @Transactional
+    public void addToUserBucket(Long productId, String username) {
+        User user = userService.findByName(username);
+        if (user == null) {
+            throw new RuntimeException("User not found - " + username);
+        }
+        Bucket bucket = user.getBucket();
+        if (bucket == null) {
+            Bucket newBucket = bucketService.createBucket(user, Collections.singletonList(productId));
+            user.setBucket(newBucket);
+            userService.save(user);
+        } else {
+            bucketService.addProduct(bucket, Collections.singletonList(productId));
+        }
+    }
+
+    @Override
+    @Transactional
+    public boolean addProduct(ProductDTO dto) {
+        productRepository.save(productMapper.toProduct(dto));
+        return true;
+    }
+
+    @Override
+    @Transactional
+    public void remove(Long productId) {
+        Product product = productRepository.getReferenceById(productId);
+        if (product == null) {
+            throw new RuntimeException(String.format("Product(%s) not found", productId));
+        }
+        productRepository.delete(product);
+    }
+}

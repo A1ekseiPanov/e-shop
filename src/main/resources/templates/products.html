@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Products</title>
+</head>
+<body>
+<div th:insert="~{fragments/menu :: #menu}"></div>
+<table border="1" align="center">
+    <tr>
+        <td><b>Title</b></td>
+        <td><b>Price</b></td>
+        <td sec:authorize="isAuthenticated()"></td>
+        <td sec:authorize="hasAnyAuthority('ADMIN', 'MANAGER')"></td>
+    </tr>
+    <tr th:each="product :${products}">
+        <td th:text="${product.title}"></td>
+        <td th:text="${product.price}"></td>
+        <td sec:authorize="isAuthenticated()"><a th:href="@{/products/{id}/bucket(id=${product.id})}">Add to bucket</a>
+        </td>
+        <td sec:authorize="hasAnyAuthority('ADMIN', 'MANAGER')">
+            <form th:method="DELETE" th:action="@{/products/{id}(id=${product.id})}">
+                <input type="submit" value="Remove"/></form>
+        </td>
+    </tr>
+</table>
+<a sec:authorize="hasAnyAuthority('ADMIN', 'MANAGER')" th:href="@{/products/new}">Add products</a>
+</body>
+</html>
