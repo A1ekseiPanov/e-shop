@@ -3,30 +3,34 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <div th:replace="fragments/header :: heads">...</div>
     <title>User</title>
 </head>
 <body>
 <div th:insert="~{fragments/menu :: #menu}"></div>
 <form th:action="@{/users/new}" th:object="${user}" method="post">
-    <table>
+    <table class="table table-bordered table-sm mt-2">
         <tr>
             <td>Name</td>
-            <td><input type="text" th:field="*{username}"></td>
+            <td><input type="text" th:field="*{username}" id="username"></td>
         </tr>
         <tr>
             <td>Password</td>
-            <td><input type="password" th:field="*{password}"></td>
+            <td><input type="password" th:field="*{password}" id="password"></td>
         </tr>
         <tr>
             <td>Matching password</td>
-            <td><input type="password" th:field="*{matchingPassword}"></td>
+            <td><input type="password" th:field="*{matchingPassword}" id="matchingPassword"></td>
         </tr>
         <tr>
             <td>Email</td>
-            <td><input type="email" th:field="*{email}"></td>
+            <td><input type="text" th:field="*{email}" id="email"></td>
         </tr>
     </table>
     <button type="submit">Save</button>
 </form>
+<div th:if="${err}">
+    <p style="color: red" th:each="error:${err}" th:text="${error.defaultMessage}">Error message</p>
+</div>
 </body>
 </html>

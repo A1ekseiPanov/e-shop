@@ -1,6 +1,5 @@
 package ru.panov.eshop.service;
 
-import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -32,9 +31,6 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public boolean save(UserDTO userDTO) {
-        if (!Objects.equals(userDTO.getPassword(), userDTO.getMatchingPassword())) {
-            throw new RuntimeException("Password is not equals");
-        }
         User user = User.builder()
                 .name(userDTO.getUsername())
                 .password(passwordEncoder.encode(userDTO.getPassword()))
@@ -73,8 +69,8 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public User findByName(String name) {
         return userRepository.findByName(name).orElseThrow(
-                () -> new RuntimeException(String.format("User '%s' not found", name)
-                ));
+                () -> new RuntimeException(String.format("User '%s' not found", name))
+        );
     }
 
     @Override

@@ -4,18 +4,33 @@
       xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
+    <div th:replace="fragments/header :: heads">...</div>
     <title>Products</title>
 </head>
 <body>
 <div th:insert="~{fragments/menu :: #menu}"></div>
-<table border="1" align="center">
+<form th:action="@{/products}" method="get">
+    <h3>Фильтр</h3>
+    <input type="text" name="keyword" th:value="${keyword!=null}?${keyword}:${key}" placeholder="Название товара"
+           size="50"/>
+
+    <input type="text" name="min_price" th:value="${minPrice!=null}?${minPrice}:${min}" placeholder="Минимальная цена"
+           size="50"/>
+
+    <input type="text" name="max_price" th:value="${maxPrice!=null}?${maxPrice}:${max}" placeholder="Максимальная цена"
+           size="50"/>
+
+    <button type="submit" class="btn btn-info">Фильтровать</button>
+    <button type="reset" class="btn btn-info" onclick="clearFilter()">Reset</button>
+</form>
+<table border="1" align="center" class="table table-bordered table-sm mt-3">
     <tr>
         <td><b>Title</b></td>
         <td><b>Price</b></td>
         <td sec:authorize="isAuthenticated()"></td>
         <td sec:authorize="hasAnyAuthority('ADMIN', 'MANAGER')"></td>
     </tr>
-    <tr th:each="product :${products}">
+    <tr th:each="product :${productDTOList}">
         <td th:text="${product.title}"></td>
         <td th:text="${product.price}"></td>
         <td sec:authorize="isAuthenticated()"><a th:href="@{/products/{id}/bucket(id=${product.id})}">Add to bucket</a>
@@ -26,6 +41,23 @@
         </td>
     </tr>
 </table>
+<div>
+    Количество продуктов: [[${totalItems}]] - Страницы [[${page}]] из [[${totalPages}]]
+    &nbsp; - &nbsp;
+    <span th:each="i: ${#numbers.sequence(1, totalPages)}">
+
+        <a th:href="@{/products/page/{i}(i = ${i},keyword=${key!=null}?${key},min_price =${min!=null}?${min},max_price =${max!=null}?${max})}"
+           th:if="${key!=null || min!=null || max!=null}">[[${i}]]</a> &nbsp;
+
+        <a th:href="@{/products/page/{i}(i = ${i})}" th:if="${key==null  && min==null && max==null}">[[${i}]]</a> &nbsp;
+
+    </span>
+</div>
 <a sec:authorize="hasAnyAuthority('ADMIN', 'MANAGER')" th:href="@{/products/new}">Add products</a>
+<script type="text/javascript">
+    function clearFilter() {
+        window.location = "[[@{/products}]]";
+    }
+</script>
 </body>
 </html>

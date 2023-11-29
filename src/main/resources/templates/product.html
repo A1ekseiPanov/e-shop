@@ -3,12 +3,13 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <div th:replace="fragments/header :: heads">...</div>
     <title>Product</title>
 </head>
 <body>
 <div th:insert="~{fragments/menu :: #menu}"></div>
 <form th:action="@{/products/new}" th:object="${product}" method="post">
-    <table>
+    <table class="table table-bordered table-sm mt-2">
         <tr>
             <td>Title</td>
             <td><input type="text" th:field="*{title}"></td>

@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <title>Login Page</title>
+    <div th:replace="fragments/header :: heads">...</div>
     <meta charset="utf-8">
 </head>
 <body>
@@ -14,7 +15,7 @@
         <p style="color: red" th:if="${loginError}" class="error">
             Invalid username or password
         </p>
-        <table style="border-collapse: separate; border-spacing: 15px 10px;">
+        <table style="border-collapse: separate; border-spacing: 15px 10px;" class="table table-bordered table-sm mt-2">
             <tr>
                 <td>Username</td>
                 <td><input type="text" name="username" placeholder="username"></td>

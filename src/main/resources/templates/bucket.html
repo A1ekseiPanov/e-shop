@@ -4,11 +4,12 @@
       xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
+    <div th:replace="fragments/header :: heads">...</div>
     <title>Bucket</title>
 </head>
 <body>
 <div th:insert="~{fragments/menu :: #menu}"></div>
-<table border="1" align="center">
+<table border="1" align="center" class="table table-bordered table-sm mt-2">
     <tr>
         <td><b>Title</b></td>
         <td><b>Amount</b></td>
