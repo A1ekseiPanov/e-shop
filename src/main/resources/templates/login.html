@@ -13,8 +13,9 @@
   justify-content: center;">
     <form th:action="@{/auth}" method="POST">
         <p style="color: red" th:if="${loginError}" class="error">
-            Invalid username or password
+            Invalid username or password or the user is not activated
         </p>
+        <p th:text="${message}"></p>
         <table style="border-collapse: separate; border-spacing: 15px 10px;" class="table table-bordered table-sm mt-2">
             <tr>
                 <td>Username</td>

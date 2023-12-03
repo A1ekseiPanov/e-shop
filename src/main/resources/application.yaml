@@ -13,3 +13,12 @@ spring:
     hiddenmethod:
       filter:
         enabled: true
+  mail:
+    host: smtp.yandex.ru
+    username: 
+    password:
+    port: 465
+    protocol: smtps
+mail:
+  debug: true
+address: http://localhost:8080/users/activate/
