@@ -3,11 +3,10 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <div th:replace="fragments/header :: heads">...</div>
+    <div th:replace="fragments/header :: h">...</div>
     <title>E-SHOP</title>
 </head>
 <body>
-<div th:insert="~{fragments/menu :: #menu}"></div>
-</div>
+<div th:insert="fragments/menu :: m"></div>
 </body>
 </html>

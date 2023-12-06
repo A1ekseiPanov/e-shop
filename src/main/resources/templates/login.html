@@ -2,36 +2,36 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <title>Login Page</title>
-    <div th:replace="fragments/header :: heads">...</div>
+    <div th:replace="fragments/header :: h">...</div>
     <meta charset="utf-8">
 </head>
 <body>
-<div th:insert="~{fragments/menu :: #menu} "></div>
-<div style="height: 90vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;">
-    <form th:action="@{/auth}" method="POST">
-        <p style="color: red" th:if="${loginError}" class="error">
+<div th:insert="fragments/menu :: m"></div>
+<div class="container">
+    <div style="align-items: center;
+  justify-content: center; display: flex;">
+<span class="ui-state-error-text" style="color: red;" th:if="${loginError}">
             Invalid username or password or the user is not activated
-        </p>
-        <p th:text="${message}"></p>
-        <table style="border-collapse: separate; border-spacing: 15px 10px;" class="table table-bordered table-sm mt-2">
-            <tr>
-                <td>Username</td>
-                <td><input type="text" name="username" placeholder="username"></td>
-            </tr>
-            <tr>
-                <td>Password</td>
-                <td><input type="password" name="password" placeholder="password"></td>
-            </tr>
-            <tr>
-                <td>
-                    <button type="submit" class="btn btn-success">Login</button>
-                </td>
-            </tr>
-        </table>
-    </form>
+        </span>
+        <span th:text="${message}"></span>
+    </div>
+    <div class="mx-auto p-2" style="width: 200px;">
+        <form th:action="@{/auth}" method="POST">
+            <div class="mb-3">
+                <label class="col-sm-2 col-form-label ">Username</label>
+                <div class="col-sm-20">
+                    <input class="form-control" type="text" name="username" placeholder="username">
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="col-sm-2 col-form-label">Password</label>
+                <div class="col-sm-20">
+                    <input class="form-control" type="password" name="password" placeholder="password">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Sing in</button>
+        </form>
+    </div>
 </div>
 </body>
 </html>

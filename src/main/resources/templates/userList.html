@@ -4,21 +4,26 @@
       xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <div th:replace="fragments/header :: heads">...</div>
+    <div th:replace="fragments/header :: h">...</div>
     <title>Users</title>
 </head>
 <body>
-<div th:insert="~{fragments/menu :: #menu}"></div>
-<table border="1" class="table table-bordered table-sm mt-2">
-    <tr>
-        <td><b>Name</b></td>
-        <td><b>Email</b></td>
-    </tr>
-    <tr th:each="user :${users}">
-        <td th:text="${user.username}"></td>
-        <td th:text="${user.email}"></td>
-    </tr>
-</table>
-<a th:href="@{/users/new}">Add user</a>
+<div th:insert="fragments/menu :: m"></div>
+<div class="container">
+    <a th:href="@{/users/new}">Add user</a>
+    <table class="table table-hover caption-top mt-2">
+        <caption>List of users</caption>
+        <tr>
+            <td><b>Name</b></td>
+            <td><b>Email</b></td>
+        </tr>
+        <tbody class="table-group-divider">
+        <tr th:each="user :${users}">
+            <td th:text="${user.username}"></td>
+            <td th:text="${user.email}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>
