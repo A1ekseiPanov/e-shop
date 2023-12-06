@@ -3,35 +3,37 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <div th:replace="fragments/header :: heads">...</div>
+    <div th:replace="fragments/header :: h">...</div>
     <title>User</title>
 </head>
 <body>
 <p th:text="${message}"></p>
-<div th:insert="~{fragments/menu :: #menu}"></div>
-<form th:action="@{/users/new}" th:object="${user}" method="post">
-    <table class="table table-bordered table-sm mt-2">
-        <tr>
-            <td>Name</td>
-            <td><input type="text" th:field="*{username}" id="username"></td>
-        </tr>
-        <tr>
-            <td>Password</td>
-            <td><input type="password" th:field="*{password}" id="password"></td>
-        </tr>
-        <tr>
-            <td>Matching password</td>
-            <td><input type="password" th:field="*{matchingPassword}" id="matchingPassword"></td>
-        </tr>
-        <tr>
-            <td>Email</td>
-            <td><input type="text" th:field="*{email}" id="email" placeholder="some@some.com"></td>
-        </tr>
-    </table>
-    <button type="submit">Save</button>
-</form>
-<div th:if="${err}">
-    <p style="color: red" th:each="error:${err}" th:text="${error.defaultMessage}">Error message</p>
+<div th:insert="fragments/menu :: m"></div>
+<div class="container">
+    <div th:if="${err}">
+        <p style="color: red" th:each="error:${err}" th:text="${error.defaultMessage}">Error message</p>
+    </div>
+    <form th:action="@{/users/new}" th:object="${user}" method="post">
+        <table class="table table-sm mt-2">
+            <tr>
+                <td>Name</td>
+                <td><input type="text" th:field="*{username}" id="username"></td>
+            </tr>
+            <tr>
+                <td>Password</td>
+                <td><input type="password" th:field="*{password}" id="password"></td>
+            </tr>
+            <tr>
+                <td>Matching password</td>
+                <td><input type="password" th:field="*{matchingPassword}" id="matchingPassword"></td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td><input type="text" th:field="*{email}" id="email" placeholder="some@some.com"></td>
+            </tr>
+        </table>
+        <button class="btn btn-primary" type="submit">Save</button>
+    </form>
 </div>
 </body>
 </html>

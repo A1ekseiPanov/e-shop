@@ -15,6 +15,7 @@ import java.util.List;
 public class Product extends AbstractBaseEntity {
     private String title;
     private BigDecimal price;
+    private String filename;
     @ManyToMany
     @JoinTable(name = "products_categories",
             joinColumns = @JoinColumn(name = "product_id"),

@@ -1,5 +1,6 @@
 package ru.panov.eshop.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -12,6 +13,7 @@ import ru.panov.eshop.model.Product;
 import ru.panov.eshop.model.User;
 import ru.panov.eshop.repositoryes.ProductRepository;
 
+import java.io.File;
 import java.util.Collections;
 
 @Service
@@ -21,7 +23,11 @@ public class ProductServiceImpl implements ProductService {
     private final UserService userService;
     private final BucketService bucketService;
 
-    private final static Integer PAGE_SIZE = 5;
+    @Value("${page-size}")
+    private Integer pageSize;
+
+    @Value("${upload-path}")
+    private String uploadPath;
 
     public ProductServiceImpl(ProductRepository productRepository,
                               UserService userService,
@@ -62,13 +68,15 @@ public class ProductServiceImpl implements ProductService {
         if (product == null) {
             throw new RuntimeException(String.format("Product(%s) not found", productId));
         }
+        File file = new File(uploadPath + "/" + product.getFilename());
+        file.delete();
         productRepository.delete(product);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<ProductDTO> getProductWithPagingAndFiltering(Specification<Product> specification, int pageNumber) {
-        Page<Product> products = productRepository.findAll(specification, PageRequest.of(pageNumber-1, PAGE_SIZE));
+        Page<Product> products = productRepository.findAll(specification, PageRequest.of(pageNumber - 1, pageSize));
         Page<ProductDTO> productsDTO = products.map(productMapper::fromProduct);
         return productsDTO;
     }

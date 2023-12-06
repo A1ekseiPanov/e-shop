@@ -3,23 +3,25 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <div th:replace="fragments/header :: heads">...</div>
+    <div th:replace="fragments/header :: h">...</div>
     <title>Product</title>
 </head>
 <body>
-<div th:insert="~{fragments/menu :: #menu}"></div>
-<form th:action="@{/products/new}" th:object="${product}" method="post">
-    <table class="table table-bordered table-sm mt-2">
-        <tr>
-            <td>Title</td>
-            <td><input type="text" th:field="*{title}"></td>
-        </tr>
-        <tr>
-            <td>Price</td>
-            <td><input type="text" th:field="*{price}"></td>
-        </tr>
-    </table>
-    <button type="submit">Save</button>
-</form>
+<div th:insert="fragments/menu :: m"></div>
+<div class="container">
+    <form class="form ml-3" th:action="@{/products/new}" th:object="${product}" method="post"
+          enctype="multipart/form-data">
+        <label class="col-sm-1 col-form-label ml-3 ">Img</label>
+        <input class="col-sm-6" type="file" name="file" accept="image/png, image/gif, image/jpeg">
+        </br>
+        <label class="col-sm-1 col-form-label ml-3 ">Title</label>
+        <input class="col-sm-6" type="text" th:field="*{title}">
+        </br>
+        <label class="col-sm-1 col-form-label ">Price</label>
+        <input class="col-sm-6" type="number" step="0.01" th:field="*{price}" placeholder="999,999">
+        </br>
+        <button class="btn btn-primary" type="submit">Save</button>
+    </form>
+</div>
 </body>
 </html>

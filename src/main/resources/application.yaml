@@ -19,6 +19,14 @@ spring:
     password:
     port: 465
     protocol: smtps
+  servlet:
+    multipart:
+      max-file-size: 16MB
+      max-request-size: 16MB
+
+page-size: 12
 mail:
   debug: true
 address: http://localhost:8080/users/activate/
+
+upload-path: C:\\projects\\e-shop\\img

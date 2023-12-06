@@ -4,60 +4,78 @@
       xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <div th:replace="fragments/header :: heads">...</div>
+    <div th:replace="fragments/header :: h">...</div>
     <title>Products</title>
 </head>
 <body>
-<div th:insert="~{fragments/menu :: #menu}"></div>
-<form th:action="@{/products}" method="get">
-    <h3>Фильтр</h3>
-    <input type="text" name="keyword" th:value="${keyword!=null}?${keyword}:${key}" placeholder="Название товара"
-           size="50"/>
-
-    <input type="text" name="min_price" th:value="${minPrice!=null}?${minPrice}:${min}" placeholder="Минимальная цена"
-           size="50"/>
-
-    <input type="text" name="max_price" th:value="${maxPrice!=null}?${maxPrice}:${max}" placeholder="Максимальная цена"
-           size="50"/>
-
-    <button type="submit" class="btn btn-info">Фильтровать</button>
-    <button type="reset" class="btn btn-info" onclick="clearFilter()">Reset</button>
-</form>
-<table border="1" align="center" class="table table-bordered table-sm mt-3">
-    <tr>
-        <td><b>Title</b></td>
-        <td><b>Price</b></td>
-        <td sec:authorize="isAuthenticated()"></td>
-        <td sec:authorize="hasAnyAuthority('ADMIN', 'MANAGER')"></td>
-    </tr>
-    <tr th:each="product :${productDTOList}">
-        <td th:text="${product.title}"></td>
-        <td th:text="${product.price}"></td>
-        <td sec:authorize="isAuthenticated()"><a th:href="@{/products/{id}/bucket(id=${product.id})}">Add to bucket</a>
-        </td>
-        <td sec:authorize="hasAnyAuthority('ADMIN', 'MANAGER')">
-            <form th:method="DELETE" th:action="@{/products/{id}(id=${product.id})}">
-                <input type="submit" value="Remove"/></form>
-        </td>
-    </tr>
-</table>
-<div>
-    Количество продуктов: [[${totalItems}]] - Страницы [[${page}]] из [[${totalPages}]]
-    &nbsp; - &nbsp;
-    <span th:each="i: ${#numbers.sequence(1, totalPages)}">
+<div th:insert="fragments/menu :: m"></div>
+<div class="container">
+    <form class="form-row mb-3" th:action="@{/products}" method="get">
+        <h3>Фильтр</h3>
+        <div class="form-group">
+            <div class="col mb-3">
+                <input type="text" name="keyword" th:value="${keyword!=null}?${keyword}:${key}"
+                       placeholder="Название товара"
+                       size="40"/>
+            </div>
+            <div class="col mb-3">
+                <input type="text" name="min_price" th:value="${minPrice!=null}?${minPrice}:${min}"
+                       placeholder="Минимальная цена"
+                       size="40"/>
+            </div>
+            <div class="col mb-3">
+                <input type="text" name="max_price" th:value="${maxPrice!=null}?${maxPrice}:${max}"
+                       placeholder="Максимальная цена"
+                       size="40"/>
+            </div>
+            <div class="col mb-3">
+                <button type="submit" class="btn btn-primary ml-2">Фильтровать</button>
+                <button type="reset" class="btn btn-primary ml-2" onclick="clearFilter()">Reset</button>
+            </div>
+        </div>
+    </form>
+    <form sec:authorize="hasAnyAuthority('ADMIN', 'MANAGER')" th:action="@{/products/new}">
+        <input class="btn btn-primary" type="submit" value="Add new product"/></form>
+    <div class="row row-cols-1 row-cols-md-4 g-5">
+        <div class="col" th:each="product :${productDTOList}">
+            <div class="card my-3" style="width: 18rem;">
+                <div class="card-body">
+                    <img th:src="@{/img/{filename}(filename=${product.filename})}" class="card-img-top" alt="...">
+                    <!--        <div class="card-body">-->
+                    <a class="card-title mb-2" th:text="${product.title}"></a>
+                    </br>
+                    <a class="card-text mb-2" th:text="${product.price}"></a>
+                    </br>
+                    <a class="btn btn-primary mb-2" sec:authorize="isAuthenticated()"
+                       th:href="@{/products/{id}/bucket(id=${product.id})}">Add to bucket</a>
+                    </br>
+                    <a sec:authorize="hasAnyAuthority('ADMIN', 'MANAGER')">
+                        <form th:method="DELETE" th:action="@{/products/{id}(id=${product.id})}">
+                            <input class="btn btn-primary" type="submit" value="Remove"/></form>
+                    </a>
+                    </br>
+                </div>
+                </tr>
+            </div>
+        </div>
+    </div>
+    </br>
+    <div th:if="${not productDTOList.isEmpty()}">
+        Количество продуктов: [[${totalItems}]] - Страницы [[${page}]] из [[${totalPages}]]
+        &nbsp; - &nbsp;
+        <span th:each="i: ${#numbers.sequence(1, totalPages)}">
 
         <a th:href="@{/products/page/{i}(i = ${i},keyword=${key!=null}?${key},min_price =${min!=null}?${min},max_price =${max!=null}?${max})}"
            th:if="${key!=null || min!=null || max!=null}">[[${i}]]</a> &nbsp;
 
         <a th:href="@{/products/page/{i}(i = ${i})}" th:if="${key==null  && min==null && max==null}">[[${i}]]</a> &nbsp;
-
     </span>
+    </div>
+    <script type="text/javascript">
+        function clearFilter() {
+            window.location = "[[@{/products}]]";
+        }
+    </script>
 </div>
-<a sec:authorize="hasAnyAuthority('ADMIN', 'MANAGER')" th:href="@{/products/new}">Add products</a>
-<script type="text/javascript">
-    function clearFilter() {
-        window.location = "[[@{/products}]]";
-    }
-</script>
 </body>
 </html>

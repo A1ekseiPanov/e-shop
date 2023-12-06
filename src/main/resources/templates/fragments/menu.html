@@ -1,43 +1,41 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="UTF-8">
-    <title>Menu</title>
-</head>
-<body>
-<div id="menu">
-    <table class="" style="border-collapse: separate; border-spacing: 15px 3px;" width="100%">
-        <tr>
-            <td align="center">
-                <table>
-                    <td>Menu:</td>
-                    <td><a th:href="@{/}">Home </a></td>
-                    <td><a th:href="@{/products}">Products </a></td>
-                    <td sec:authorize="isAuthenticated()"><a th:href="@{/bucket}">Bucket </a></td>
-                    <td sec:authorize="hasAnyAuthority('ADMIN', 'MANAGER')"><a th:href="@{/users}">Users </a></td>
-                </table>
-            </td>
-            <td align="right">
-                <div sec:authorize="isAuthenticated()">
-                    <div>
-                        Hello,<a th:href="@{/profile}"> <span sec:authentication="principal.username"></span></a>
-                    </div>
-                    <div>
-                        <a th:href="@{/logout}">Logout</a>
-                    </div>
+<nav th:fragment="m" class="navbar navbar-expand-lg navabar-ligth" style="background-color: #e3f2fd;">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">E-shop</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav  me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/products">Products</a>
+                </li>
+                <li class="nav-item">
+                    <a sec:authorize="isAuthenticated()" class="nav-link" href="/bucket">Bucket</a>
+                </li>
+                <li class="nav-item">
+                    <a sec:authorize="hasAnyAuthority('ADMIN', 'MANAGER')" class="nav-link" href="/users">Users</a>
+                </li>
+            </ul>
+            <div sec:authorize="isAuthenticated()">
+                <div class="navbar-text">
+                    <form action="/logout">
+                        Hello,<a th:href="@{/profile}"> <span class="me-md-2"
+                                                              sec:authentication="principal.username"></span></a>
+                        <input class="btn btn-primary btn-sm" type="submit" value="Sing out">
+                    </form>
                 </div>
-                <div sec:authorize="!isAuthenticated()">
-                    <div>
-                        Hello. Please <a th:href="@{/login}">Login</a>
-                    </div>
-                </div>
-            </td>
-        </tr>
-
-    </table>
-</div>
-</form>
-</body>
-</html>
+            </div>
+        </div>
+        <div sec:authorize="!isAuthenticated()">
+            <form action="/login">
+                Hello. Please
+                <input class="btn btn-primary btn-sm" type="submit" value="Sing in">
+            </form>
+        </div>
+    </div>
+</nav>
